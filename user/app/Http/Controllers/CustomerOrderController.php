@@ -65,8 +65,22 @@ class CustomerOrderController extends Controller
        return view('grocery_shop.customerOrder', compact('coutomer_orders'));
     }
 
-    public function customer_wishlist($id)
+    public function customer_wishlist()
     {
-        return view('grocery_shop.wishlist');
+        $products=wishlist::all();
+        return view('grocery_shop.wishlist', compact('products'));
+    }
+    public function add_to_wishlist(Request $request)
+    {
+        $data= array();
+        $data['product_id']=$request->id;
+        $data['product_name']=$request->title;
+        $data['product_price']=$request->price;
+        //dd($data);
+        $wishData=wishlist::insert($data);
+        if($wishData)
+        {
+          return view('grocery_shop.home');
+        }
     }
 }
